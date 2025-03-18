@@ -20,9 +20,9 @@ pipeline {
         stage('Plan') {
             steps {
                 dir('terraform') {
-                    bash 'terraform init'
-                    bash 'terraform plan -out tfplan'
-                    bash 'terraform show -no-color tfplan > tfplan.txt'
+                    sh 'terraform init'
+                    sh 'terraform plan -out tfplan'
+                    sh 'terraform show -no-color tfplan > tfplan.txt'
                 }
             }
         }

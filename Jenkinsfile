@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Terraform Version') {
             steps {
-                sh 'terraform --version'
+                bat 'terraform --version'
             }
         }
 
@@ -20,17 +20,16 @@ pipeline {
                 script {
                     git branch: 'main', url: 'https://github.com/HalienCoder/Jenkins-Terraform.git'
                 }
-                sh 'pwd'
-                sh 'ls' // To verify files after checkout
+                bat 'dir'  // Windows equivalent of ls
             }
         }
 
         stage('Plan') {
             steps {
-                dir('terraform') { // Ensure this matches your repo structure
-                    sh 'terraform init'
-                    sh 'terraform plan -out=tfplan'
-                    sh 'terraform show -no-color tfplan > tfplan.txt'
+                dir('terraform') {
+                    bat 'terraform init'
+                    bat 'terraform plan -out=tfplan'
+                    bat 'terraform show -no-color tfplan > tfplan.txt'
                 }
             }
         }
@@ -52,8 +51,8 @@ pipeline {
 
         stage('Apply') {
             steps {
-                dir('terraform') { // Ensure this matches your repo structure
-                    sh 'terraform apply -input=false tfplan'
+                dir('terraform') {
+                    bat 'terraform apply -input=false tfplan'
                 }
             }
         }

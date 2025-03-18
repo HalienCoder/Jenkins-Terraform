@@ -20,14 +20,16 @@ pipeline {
                 script {
                     git branch: 'main', url: 'https://github.com/HalienCoder/Jenkins-Terraform.git'
                 }
+                sh 'pwd'
+                sh 'ls' // To verify files after checkout
             }
         }
 
         stage('Plan') {
             steps {
-                dir('terraform') {
+                dir('terraform') { // Ensure this matches your repo structure
                     sh 'terraform init'
-                    sh 'terraform plan -out tfplan'
+                    sh 'terraform plan -out=tfplan'
                     sh 'terraform show -no-color tfplan > tfplan.txt'
                 }
             }
@@ -50,7 +52,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                dir('terraform') {
+                dir('terraform') { // Ensure this matches your repo structure
                     sh 'terraform apply -input=false tfplan'
                 }
             }
